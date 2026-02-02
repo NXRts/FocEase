@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CloudRain, Flame, Coffee, Wind, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { CloudRain, Flame, Waves, Wind, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { Sound } from '@/types';
 
-// Mock data for sounds - In a real app these would be real audio files
+// Using local public sound files for reliability
 const AVAILABLE_SOUNDS: Sound[] = [
-    { id: 'rain', name: 'Rain', src: 'https://assets.mixkit.co/active_storage/sfx/2493/2493-preview.m4a', icon: <CloudRain size={20} /> },
-    { id: 'fire', name: 'Fireplace', src: 'https://assets.mixkit.co/active_storage/sfx/2596/2596-preview.m4a', icon: <Flame size={20} /> },
-    { id: 'cafe', name: 'Cafe', src: 'https://assets.mixkit.co/active_storage/sfx/2458/2458-preview.m4a', icon: <Coffee size={20} /> },
-    { id: 'wind', name: 'Wind', src: 'https://assets.mixkit.co/active_storage/sfx/2558/2558-preview.m4a', icon: <Wind size={20} /> },
+    { id: 'rain', name: 'Rain', src: '/sounds/rain.ogg', icon: <CloudRain size={20} /> },
+    { id: 'fire', name: 'Fireplace', src: '/sounds/fire.ogg', icon: <Flame size={20} /> },
+    { id: 'stream', name: 'River', src: '/sounds/stream.ogg', icon: <Waves size={20} /> },
+    { id: 'wind', name: 'Wind', src: '/sounds/wind.ogg', icon: <Wind size={20} /> },
 ];
 
 const AudioController = ({
@@ -22,11 +22,17 @@ const AudioController = ({
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        if (!audioRef.current) {
-            audioRef.current = new Audio(sound.src);
-            audioRef.current.loop = true;
-        }
-    }, [sound.src]);
+        // Initialize audio object once
+        const audio = new Audio(sound.src);
+        audio.loop = true;
+        audio.volume = volume;
+        audioRef.current = audio;
+
+        return () => {
+            audio.pause();
+            audioRef.current = null;
+        };
+    }, [sound.src]); // Re-init if src changes (unlikely)
 
     useEffect(() => {
         if (audioRef.current) {
@@ -35,7 +41,7 @@ const AudioController = ({
                 const playPromise = audioRef.current.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
-                        console.warn("Audio play failed:", error);
+                        console.error("Audio play failed:", error);
                     });
                 }
             } else {
@@ -58,6 +64,7 @@ export default function SoundMixer() {
 
     const toggleSound = (id: string) => {
         setActiveSounds(prev => {
+            // Default to playing with 50% volume if starting
             if (!prev[id]) {
                 return { ...prev, [id]: { isPlaying: true, volume: 0.5 } };
             }
@@ -67,7 +74,10 @@ export default function SoundMixer() {
 
     const changeVolume = (id: string, value: number) => {
         setActiveSounds(prev => {
-            if (!prev[id]) return prev;
+            // If changing volume, ensure sound entry exists (even if paused)
+            if (!prev[id]) {
+                return { ...prev, [id]: { isPlaying: false, volume: value } };
+            }
             return { ...prev, [id]: { ...prev[id], volume: value } };
         });
     };
