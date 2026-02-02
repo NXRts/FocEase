@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
+@theme {
+  --color-zen-bg: #1a1c23;
+  --color-zen-card: #252830;
+  --color-zen-accent: #7c8ca5;
+  --color-zen-highlight: #a3b8d4;
+  --color-zen-text: #e2e8f0;
+  --color-zen-muted: #64748b;
+  --color-zen-primary: #38bdf8;
+  --color-zen-secondary: #818cf8;
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #1a1c23;
+  --foreground: #e2e8f0;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit), sans-serif;
+  /* Fallback */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar for Webkit */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1c23;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #252830;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c8ca5;
 }
