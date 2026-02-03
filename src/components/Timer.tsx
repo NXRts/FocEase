@@ -1,10 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTimer } from '@/hooks/useTimer';
-import { Play, Pause, RotateCcw, Coffee, Zap, Brain } from 'lucide-react';
+import { Play, Pause, RotateCcw, Coffee, Zap, Brain, Settings, X, Save } from 'lucide-react';
 import { TimerMode } from '@/types';
 
 export default function Timer() {
-    const { mode, timeLeft, isActive, progress, switchMode, toggleTimer, resetTimer, formatTime } = useTimer();
+    const { mode, timeLeft, isActive, progress, config, switchMode, toggleTimer, resetTimer, formatTime, updateDuration } = useTimer();
+    const [showSettings, setShowSettings] = useState(false);
+    const [localConfig, setLocalConfig] = useState(config);
+
+    // Sync local config when opening settings
+    React.useEffect(() => {
+        if (showSettings) {
+            setLocalConfig({
+                focus: config.focus / 60,
+                shortBreak: config.shortBreak / 60,
+                longBreak: config.longBreak / 60,
+            });
+        }
+    }, [showSettings, config]);
+
+    const handleSaveSettings = () => {
+        updateDuration('focus', localConfig.focus);
+        updateDuration('shortBreak', localConfig.shortBreak);
+        updateDuration('longBreak', localConfig.longBreak);
+        setShowSettings(false);
+    };
 
     // Circular progress calculation
     const radius = 120;
@@ -29,10 +49,79 @@ export default function Timer() {
             }`;
     };
 
+    if (showSettings) {
+        return (
+            <div className="bg-zen-card p-8 rounded-3xl shadow-lg border border-zen-accent/10 flex flex-col h-[420px] relative overflow-hidden">
+                <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-lg font-medium text-zen-text">Timer Settings</h3>
+                    <button onClick={() => setShowSettings(false)} className="text-zen-muted hover:text-zen-text">
+                        <X size={20} />
+                    </button>
+                </div>
+
+                <div className="flex-1 space-y-6">
+                    {/* Focus Duration */}
+                    <div className="space-y-2">
+                        <label className="text-sm text-zen-muted flex items-center gap-2">
+                            <Brain size={16} /> Focus (minutes)
+                        </label>
+                        <input
+                            type="number"
+                            value={localConfig.focus}
+                            onChange={(e) => setLocalConfig(prev => ({ ...prev, focus: parseInt(e.target.value) || 0 }))}
+                            className="w-full bg-zen-bg/50 rounded-xl py-2 px-4 text-zen-text focus:outline-none focus:ring-1 focus:ring-zen-primary"
+                        />
+                    </div>
+
+                    {/* Short Break Duration */}
+                    <div className="space-y-2">
+                        <label className="text-sm text-zen-muted flex items-center gap-2">
+                            <Coffee size={16} /> Short Break (minutes)
+                        </label>
+                        <input
+                            type="number"
+                            value={localConfig.shortBreak}
+                            onChange={(e) => setLocalConfig(prev => ({ ...prev, shortBreak: parseInt(e.target.value) || 0 }))}
+                            className="w-full bg-zen-bg/50 rounded-xl py-2 px-4 text-zen-text focus:outline-none focus:ring-1 focus:ring-zen-secondary"
+                        />
+                    </div>
+
+                    {/* Long Break Duration */}
+                    <div className="space-y-2">
+                        <label className="text-sm text-zen-muted flex items-center gap-2">
+                            <Zap size={16} /> Long Break (minutes)
+                        </label>
+                        <input
+                            type="number"
+                            value={localConfig.longBreak}
+                            onChange={(e) => setLocalConfig(prev => ({ ...prev, longBreak: parseInt(e.target.value) || 0 }))}
+                            className="w-full bg-zen-bg/50 rounded-xl py-2 px-4 text-zen-text focus:outline-none focus:ring-1 focus:ring-zen-accent"
+                        />
+                    </div>
+                </div>
+
+                <button
+                    onClick={handleSaveSettings}
+                    className="mt-6 w-full bg-zen-primary text-zen-bg font-medium py-3 rounded-xl hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
+                >
+                    <Save size={18} /> Save Changes
+                </button>
+            </div>
+        )
+    }
+
     return (
-        <div className="bg-zen-card p-8 rounded-3xl shadow-lg border border-zen-accent/10 flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="bg-zen-card p-8 rounded-3xl shadow-lg border border-zen-accent/10 flex flex-col items-center justify-center relative overflow-hidden h-[420px]">
             {/* Background decoration */}
             <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-20 ${getModeColor()}`} />
+
+            {/* Settings Button */}
+            <button
+                onClick={() => setShowSettings(true)}
+                className="absolute top-6 right-6 text-zen-muted hover:text-zen-text transition-colors"
+            >
+                <Settings size={20} />
+            </button>
 
             <div className="flex gap-2 mb-8 bg-zen-bg/50 p-1.5 rounded-full">
                 <button onClick={() => switchMode('focus')} className={getButtonClass('focus')}>

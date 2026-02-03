@@ -1,22 +1,31 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TimerMode } from '@/types';
+import { useLocalStorage } from './useLocalStorage';
 
-const TIMER_CONFIG = {
+const DEFAULT_CONFIG = {
     focus: 25 * 60,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
 
 export function useTimer() {
+    const [config, setConfig] = useLocalStorage('zen-timer-config', DEFAULT_CONFIG);
     const [mode, setMode] = useState<TimerMode>('focus');
-    const [timeLeft, setTimeLeft] = useState(TIMER_CONFIG.focus);
+    const [timeLeft, setTimeLeft] = useState(DEFAULT_CONFIG.focus);
     const [isActive, setIsActive] = useState(false);
+
+    // Update timeLeft when config changes, but only if not active to avoid jumping
+    useEffect(() => {
+        if (!isActive) {
+            setTimeLeft(config[mode]);
+        }
+    }, [config, mode, isActive]);
 
     const switchMode = useCallback((newMode: TimerMode) => {
         setMode(newMode);
-        setTimeLeft(TIMER_CONFIG[newMode]);
+        setTimeLeft(config[newMode]);
         setIsActive(false);
-    }, []);
+    }, [config]);
 
     const toggleTimer = useCallback(() => {
         setIsActive((prev) => !prev);
@@ -24,8 +33,15 @@ export function useTimer() {
 
     const resetTimer = useCallback(() => {
         setIsActive(false);
-        setTimeLeft(TIMER_CONFIG[mode]);
-    }, [mode]);
+        setTimeLeft(config[mode]);
+    }, [mode, config]);
+
+    const updateDuration = useCallback((newMode: TimerMode, minutes: number) => {
+        setConfig(prev => ({
+            ...prev,
+            [newMode]: minutes * 60
+        }));
+    }, [setConfig]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
@@ -36,7 +52,6 @@ export function useTimer() {
             }, 1000);
         } else if (timeLeft === 0) {
             setIsActive(false);
-            // Optional: Play alarm sound here
         }
 
         return () => {
@@ -50,16 +65,18 @@ export function useTimer() {
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
-    const progress = ((TIMER_CONFIG[mode] - timeLeft) / TIMER_CONFIG[mode]) * 100;
+    const progress = ((config[mode] - timeLeft) / config[mode]) * 100;
 
     return {
         mode,
         timeLeft,
         isActive,
         progress,
+        config,
         switchMode,
         toggleTimer,
         resetTimer,
         formatTime,
+        updateDuration
     };
 }
