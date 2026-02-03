@@ -57,7 +57,7 @@ export default function Timer() {
             {/* Header */}
             <div className="w-full flex justify-between items-start mb-6">
                 <h2 className="text-xl font-medium text-zen-text flex items-center gap-2">
-                    <span className={`w-1.5 h-6 rounded-full ${mode === 'focus' ? 'bg-zen-primary' : mode === 'shortBreak' ? 'bg-zen-secondary' : 'bg-zen-accent'}`}></span>
+                    <span className="w-1.5 h-6 rounded-full bg-emerald-500"></span>
                     Timer
                 </h2>
                 <button
