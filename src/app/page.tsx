@@ -26,12 +26,8 @@ export default function Home() {
         <div className="h-[600px] min-h-0"><PrayerTimes /></div>
       </main>
 
-      <footer className="max-w-[1600px] mx-auto mt-20 flex items-center justify-between w-full text-zen-muted text-[10px] tracking-widest uppercase font-medium">
-        <div className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-black font-bold text-[8px]">N</div>
-        </div>
+      <footer className="max-w-[1600px] mx-auto mt-20 flex items-center justify-center w-full text-zen-muted text-[10px] tracking-widest uppercase font-medium">
         <p>© {new Date().getFullYear()} Zen Focus Space. Stay productive.</p>
-        <div className="w-6"></div> {/* Spacer for balance */}
       </footer>
     </div>
   );

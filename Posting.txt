@@ -1,0 +1,45 @@
+🚀 Excited to share my latest project: Zen Focus Space! 🧘✨
+
+Saya baru saja menyelesaikan sebuah platform "Deep Work" yang dirancang untuk membantu kita tetap fokus, tenang, dan produktif di tengah hiruk-pikuk dunia digital.
+
+Zen Focus Space bukan sekadar dasbor produktivitas biasa. Ini adalah ruang digital minimalis yang menggabungkan:
+
+✅ Minimalist Focus Timer – Membantu Anda masuk ke zona konsentrasi tanpa distraksi.
+🔊 Ambient Sound Mixer – Personalisasi suasana kerja Anda dengan suara Hujan, Cafe, Hutan, hingga Deburan Ombak (semuanya dalam kualitas tinggi!).
+📝 Task List – Kelola prioritas harian dengan antarmuka Glassmorphism yang elegan.
+🕌 Prayer Times Integration – Menjaga keseimbangan antara produktivitas dan ibadah dengan jadwal sholat otomatis.
+
+Built with:
+🛠️ Next.js 14 (App Router)
+💻 TypeScript
+🎨 Tailwind CSS & Lucide Icons
+
+Filosofi desain saya untuk proyek ini adalah "Essentialism" – hanya menampilkan yang benar-benar penting agar pikiran tetap jernih.
+
+Saya belajar banyak tentang state management, audio error handling, dan desain estetika modern selama proses build ini.
+
+Check it out and let me know what you think! Bagaimana cara Anda tetap fokus saat sedang Deep Work? 👇
+
+#NextJS #WebDevelopment #Productivity #TypeScript #ReactJS #DeepWork #UIDesign #ZenFocusSpace #SoftwareEngineering
+
+---
+
+[Pilihan 2: Lebih Singkat & To the Point]
+
+Building my own focus hub: Zen Focus Space 🧘
+
+Sering merasa terdistraksi saat bekerja di depan laptop? Saya membangun solusi untuk diri saya sendiri (dan mungkin untuk Anda juga).
+
+Zen Focus Space menghadirkan:
+🎯 Timer Fokus yang bersih.
+🌧️ Ambient Sounds (Rain, Ocean, Cafe) untuk memblokir kebisingan.
+📋 To-do list minimalis.
+🕋 Jadwal Sholat real-time.
+
+Semuanya dibalut dalam desain Glassmorphism yang modern dan calming.
+
+Tech stack: Next.js, TypeScript, Tailwind CSS.
+
+Focus is the new IQ. Yuk, mulai deep work sekarang!
+
+#NextJS #Productivity #ZenFocus #WebDev
