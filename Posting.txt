@@ -1,8 +1,8 @@
-🚀 Excited to share my latest project: Quietude Space! 🧘✨
+🚀 Excited to share my latest project: FocEase! 🧘✨
 
 Saya baru saja menyelesaikan sebuah platform "Deep Work" yang dirancang untuk membantu kita tetap fokus, tenang, dan produktif di tengah hiruk-pikuk dunia digital.
 
-Quietude Space bukan sekadar dasbor produktivitas biasa. Ini adalah ruang digital minimalis yang menggabungkan:
+FocEase bukan sekadar dasbor produktivitas biasa. Ini adalah ruang digital minimalis yang menggabungkan:
 
 ✅ Minimalist Focus Timer – Membantu Anda masuk ke zona konsentrasi tanpa distraksi.
 🔊 Ambient Sound Mixer – Personalisasi suasana kerja Anda dengan suara Hujan, Cafe, Hutan, hingga Deburan Ombak (semuanya dalam kualitas tinggi!).
@@ -20,21 +20,21 @@ Saya belajar banyak tentang state management, audio error handling, dan desain e
 
 Check it out here:
 🌐 Live Demo: [Link Web Anda]
-� GitHub: https://github.com/NXRts/ZenFocusSpace (Akan segera di-rename menjadi QuietudeSpace)
+�📱 GitHub: https://github.com/NXRts/FocEase
 
 Check it out and let me know what you think! Bagaimana cara Anda tetap fokus saat sedang Deep Work? 👇
 
-#NextJS #WebDevelopment #Productivity #TypeScript #ReactJS #DeepWork #UIDesign #QuietudeSpace #SoftwareEngineering
+#NextJS #WebDevelopment #Productivity #TypeScript #ReactJS #DeepWork #UIDesign #FocEase #SoftwareEngineering
 
 ---
 
 [Pilihan 2: Lebih Singkat & To the Point]
 
-Building my own focus hub: Quietude Space 🧘
+Building my own focus hub: FocEase 🧘
 
 Sering merasa terdistraksi saat bekerja di depan laptop? Saya membangun solusi untuk diri saya sendiri (dan mungkin untuk Anda juga).
 
-Quietude Space menghadirkan:
+FocEase menghadirkan:
 🎯 Timer Fokus yang bersih.
 🌧️ Ambient Sounds (Rain, Ocean, Cafe) untuk memblokir kebisingan.
 📋 To-do list minimalis.
@@ -44,10 +44,10 @@ Semuanya dibalut dalam desain Glassmorphism yang modern dan calming.
 
 Tech stack: Next.js, TypeScript, Tailwind CSS.
 
-✨ Explore Quietude Space:
+✨ Explore FocEase:
 🌐 Live Demo: [Link Web Anda]
-💻 GitHub: https://github.com/NXRts/ZenFocusSpace
+💻 GitHub: https://github.com/NXRts/FocEase
 
 Focus is the new IQ. Yuk, mulai deep work sekarang!
 
-#NextJS #Productivity #QuietudeSpace #WebDev
+#NextJS #Productivity #FocEase #WebDev

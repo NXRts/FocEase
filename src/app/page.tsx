@@ -10,7 +10,7 @@ export default function Home() {
       <header className="max-w-[1600px] mx-auto mb-16 flex items-center justify-between w-full">
         <div>
           <h1 className="text-3xl md:text-4xl font-medium tracking-tight text-white mb-2">
-            Quietude Space
+            FocEase
           </h1>
           <p className="text-zen-muted text-lg font-light">
             Reclaim your concentration
@@ -27,7 +27,7 @@ export default function Home() {
       </main>
 
       <footer className="max-w-[1600px] mx-auto mt-20 flex items-center justify-center w-full text-zen-muted text-[10px] tracking-widest uppercase font-medium">
-        <p>© {new Date().getFullYear()} Quietude Space. Stay productive.</p>
+        <p>© {new Date().getFullYear()} FocEase. Stay productive.</p>
       </footer>
     </div>
   );
