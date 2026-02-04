@@ -9,7 +9,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'Zen Focus Space',
+  title: 'Quietude Space',
   description: 'A minimalist productivity dashboard',
 };
 
