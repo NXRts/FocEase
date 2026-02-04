@@ -1,4 +1,4 @@
-# 🧘 Zen Focus Space
+# 🧘 Quietude Space
 
 > **Reclaim your concentration.**  
 > A minimalist, premium productivity dashboard designed to create a serene environment for deep work.
@@ -7,7 +7,7 @@
 
 ## 💡 Overview & Function
 
-**Zen Focus Space** dirancang sebagai ruang digital khusus untuk membantu Anda mencapai fokus maksimal dan ketenangan saat bekerja atau belajar. 
+**Quietude Space** dirancang sebagai ruang digital khusus untuk membantu Anda mencapai fokus maksimal dan ketenangan saat bekerja atau belajar. 
 
 Fungsi utama dari platform ini adalah:
 1.  **Deep Work Facilitator:** Mengintegrasikan elemen audio dan visual yang menenangkan untuk meminimalisir gangguan mental.
@@ -40,7 +40,7 @@ Stay balanced with real-time prayer schedule calculations, keeping your spiritua
 
 ## 🎨 Design Philosophy
 
-Zen Focus Space is built on the principle of **"Essentialism."**
+Quietude Space is built on the principle of **"Essentialism."**
 - **Deep Purples & Dark Mode:** Reduces eye strain and creates a focused atmosphere.
 - **Glassmorphism:** Adds a layer of depth and modern elegance.
 - **Micro-animations:** Subtle feedback that makes the interface feel alive without being distracting.
