@@ -114,7 +114,7 @@ export default function PrayerTimes() {
         setError('');
         try {
             const response = await fetch(
-                `https://api.aladhan.com/v1/timingsByCity?city=${searchCity}&country=${country}&method=2`
+                `https://api.aladhan.com/v1/timingsByCity?city=${searchCity}&country=${country}&method=20`
             );
             const data = await response.json();
 
@@ -161,8 +161,8 @@ export default function PrayerTimes() {
                     <button
                         onClick={toggleNotif}
                         className={`p-2 rounded-xl transition-all ${notifEnabled
-                                ? 'bg-amber-500/20 text-amber-500'
-                                : 'bg-zen-accent/30 text-zen-muted hover:text-white'
+                            ? 'bg-amber-500/20 text-amber-500'
+                            : 'bg-zen-accent/30 text-zen-muted hover:text-white'
                             }`}
                         title={notifEnabled ? "Disable notifications" : "Enable notifications"}
                     >
