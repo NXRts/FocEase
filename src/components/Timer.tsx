@@ -1,12 +1,36 @@
 import React, { useState } from 'react';
 import { useTimer } from '@/hooks/useTimer';
-import { Play, Pause, RotateCcw, Coffee, Zap, Brain, Settings, X, Save } from 'lucide-react';
+import { Play, Pause, RotateCcw, Coffee, Zap, Brain, Settings, X, Save, Bell, BellOff } from 'lucide-react';
 import { TimerMode } from '@/types';
 
 export default function Timer() {
     const { mode, timeLeft, isActive, progress, config, switchMode, toggleTimer, resetTimer, formatTime, updateDuration } = useTimer();
     const [showSettings, setShowSettings] = useState(false);
     const [localConfig, setLocalConfig] = useState(config);
+    const [notifEnabled, setNotifEnabled] = useState(false);
+
+    // Initial permission check
+    React.useEffect(() => {
+        if (typeof window !== 'undefined' && 'Notification' in window) {
+            setNotifEnabled(Notification.permission === 'granted');
+        }
+    }, []);
+
+    const requestPermission = async () => {
+        if (!('Notification' in window)) return;
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            setNotifEnabled(true);
+        }
+    };
+
+    const toggleNotif = () => {
+        if (!notifEnabled) {
+            requestPermission();
+        } else {
+            setNotifEnabled(false);
+        }
+    };
 
     // Sync local config when opening settings
     React.useEffect(() => {
@@ -57,12 +81,21 @@ export default function Timer() {
                     <span className="w-1.5 h-6 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.4)]"></span>
                     Timer
                 </h2>
-                <button
-                    onClick={() => setShowSettings(true)}
-                    className="text-zen-muted hover:text-zen-text transition-colors p-1.5 rounded-full"
-                >
-                    <Settings size={20} />
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={toggleNotif}
+                        className={`p-1.5 rounded-full transition-all ${notifEnabled ? 'text-emerald-400' : 'text-zen-muted'}`}
+                        title={notifEnabled ? "Notifications enabled" : "Enable notifications"}
+                    >
+                        {notifEnabled ? <Bell size={18} /> : <BellOff size={18} />}
+                    </button>
+                    <button
+                        onClick={() => setShowSettings(true)}
+                        className="text-zen-muted hover:text-zen-text transition-colors p-1.5 rounded-full"
+                    >
+                        <Settings size={20} />
+                    </button>
+                </div>
             </div>
 
             {/* Timer Display */}
