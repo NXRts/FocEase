@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Moon, Sun, MapPin, Search, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Moon, Sun, MapPin, Search, Loader2, Bell, BellOff } from 'lucide-react';
 
 interface PrayerTimesData {
     timings: {
@@ -33,6 +33,81 @@ export default function PrayerTimes() {
     const [city, setCity] = useState('Jakarta');
     const [country, setCountry] = useState('Indonesia');
     const [searchCity, setSearchCity] = useState('Jakarta');
+    const [notifEnabled, setNotifEnabled] = useState(false);
+    const lastNotified = useRef<string | null>(null);
+
+    // Initial permission check
+    useEffect(() => {
+        if (typeof window !== 'undefined' && 'Notification' in window) {
+            setNotifEnabled(Notification.permission === 'granted');
+        }
+    }, []);
+
+    const requestPermission = async () => {
+        if (!('Notification' in window)) {
+            alert('This browser does not support desktop notification');
+            return;
+        }
+
+        if (Notification.permission === 'granted') {
+            setNotifEnabled(true);
+            return;
+        }
+
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            setNotifEnabled(true);
+            new Notification('FocEase', {
+                body: 'Notifications enabled for prayer times!',
+                icon: '/favicon.ico'
+            });
+        }
+    };
+
+    const toggleNotif = () => {
+        if (!notifEnabled) {
+            requestPermission();
+        } else {
+            setNotifEnabled(false);
+        }
+    };
+
+    // Notification Check Timer
+    useEffect(() => {
+        if (!notifEnabled || !prayerData) return;
+
+        const checkPrayerTimes = () => {
+            const now = new Date();
+            const currentTime = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+
+            const prayerList = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+            for (const name of prayerList) {
+                const prayerTime = prayerData.timings[name];
+                if (prayerTime === currentTime && lastNotified.current !== name) {
+                    new Notification('Waktunya Sholat', {
+                        body: `Sudah masuk waktu ${name}. Mari sejenak beribadah.`,
+                        icon: '/favicon.ico',
+                        silent: false,
+                    });
+                    lastNotified.current = name;
+                    break;
+                }
+            }
+
+            // Reset lastNotified if time moves to a different minute
+            if (lastNotified.current && prayerData.timings[lastNotified.current] !== currentTime) {
+                lastNotified.current = null;
+            }
+        };
+
+        const interval = setInterval(checkPrayerTimes, 30000); // Check every 30 seconds
+        return () => clearInterval(interval);
+    }, [notifEnabled, prayerData]);
 
     const fetchPrayerTimes = React.useCallback(async () => {
         setLoading(true);
@@ -82,8 +157,20 @@ export default function PrayerTimes() {
                     <span className="w-1.5 h-6 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.4)]"></span>
                     Prayer Times
                 </h2>
-                <div className="text-[10px] text-zen-muted text-right uppercase tracking-wider font-medium">
-                    {prayerData?.date.hijri.weekday.en}, {prayerData?.date.readable}
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={toggleNotif}
+                        className={`p-2 rounded-xl transition-all ${notifEnabled
+                                ? 'bg-amber-500/20 text-amber-500'
+                                : 'bg-zen-accent/30 text-zen-muted hover:text-white'
+                            }`}
+                        title={notifEnabled ? "Disable notifications" : "Enable notifications"}
+                    >
+                        {notifEnabled ? <Bell size={18} /> : <BellOff size={18} />}
+                    </button>
+                    <div className="text-[10px] text-zen-muted text-right uppercase tracking-wider font-medium">
+                        {prayerData?.date.hijri.weekday.en}, {prayerData?.date.readable}
+                    </div>
                 </div>
             </div>
 
