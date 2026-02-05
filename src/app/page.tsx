@@ -27,7 +27,7 @@ export default function Home() {
       </main>
 
       <footer className="max-w-[1600px] mx-auto mt-20 flex items-center justify-center w-full text-zen-muted text-[10px] tracking-widest uppercase font-medium">
-        <p>© {new Date().getFullYear()} FocEase. Stay productive.</p>
+        <p>© {new Date().getFullYear()} FocEase. Stay productive. Web by <a href="https://github.com/nxrts" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-4">NXRts</a></p>
       </footer>
     </div>
   );
