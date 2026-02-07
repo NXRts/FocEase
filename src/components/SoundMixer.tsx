@@ -96,13 +96,13 @@ export default function SoundMixer() {
     const { activeSounds, toggleSound, setSoundVolume, handleSoundError, masterVolume } = useAudio();
 
     return (
-        <div className="bg-zen-card p-6 rounded-3xl shadow-lg border border-white/5 min-h-[300px] flex flex-col h-full">
-            <h2 className="text-xl font-medium mb-6 text-zen-text flex items-center gap-3">
+        <div className="bg-zen-card p-4 md:p-6 rounded-3xl shadow-lg border border-white/5 min-h-[300px] flex flex-col h-full">
+            <h2 className="text-lg md:text-xl font-medium mb-4 md:mb-6 text-zen-text flex items-center gap-3">
                 <span className="w-1.5 h-6 bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.4)]"></span>
                 Ambient Sounds
             </h2>
 
-            <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto pr-1 md:pr-2 space-y-3 custom-scrollbar">
                 {AVAILABLE_SOUNDS.map((sound) => {
                     const state = activeSounds[sound.id] || { isPlaying: false, volume: 0.5 };
                     const theme = getSoundColors(sound.color);
