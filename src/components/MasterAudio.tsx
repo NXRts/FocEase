@@ -36,7 +36,7 @@ export default function MasterAudio() {
     return (
         <div className="max-w-[1600px] mx-auto w-full mb-8 grid grid-cols-1 md:flex md:flex-wrap items-stretch md:items-center gap-3 md:gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
             {/* Master Volume */}
-            <div className="bg-zen-card/80 backdrop-blur-md border border-white/5 px-6 py-3 rounded-2xl flex items-center gap-4 group hover:border-white/10 transition-all flex-1">
+            <div className="bg-zen-card/80 backdrop-blur-md border border-white/5 px-6 py-3 rounded-2xl flex items-center gap-4 group hover:border-white/10 transition-all flex-1 md:flex-initial md:min-w-[320px]">
                 <Volume2 className="text-zen-muted group-hover:text-purple-400 transition-colors" size={20} />
                 <span className="text-sm font-medium text-zen-muted min-w-[60px]">Master</span>
                 <input
@@ -57,7 +57,7 @@ export default function MasterAudio() {
             </div>
 
             {/* Timer Dropdown */}
-            <div className="bg-zen-card/80 backdrop-blur-md border border-white/5 px-6 py-3 rounded-2xl flex items-center justify-between md:justify-start gap-4 group hover:border-white/10 transition-all flex-1">
+            <div className="bg-zen-card/80 backdrop-blur-md border border-white/5 px-6 py-3 rounded-2xl flex items-center justify-between md:justify-start gap-4 group hover:border-white/10 transition-all flex-1 md:flex-initial md:min-w-[280px]">
                 <div className="flex items-center gap-4">
                     <Clock className="text-zen-muted group-hover:text-blue-400 transition-colors" size={20} />
                     <div className="relative flex items-center gap-2">
