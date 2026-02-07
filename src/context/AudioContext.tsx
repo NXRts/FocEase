@@ -18,6 +18,7 @@ interface AudioContextType {
     setSoundVolume: (id: string, volume: number) => void;
     handleSoundError: (id: string, message: string) => void;
     playAll: () => void;
+    stopAll: () => void;
     resetAll: () => void;
     timerDuration: number; // in seconds, 0 means no timer
     setTimerDuration: (duration: number) => void;
@@ -43,7 +44,61 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const [activeSounds, setActiveSounds] = useState<Record<string, AudioState>>({});
     const [timerDuration, setTimerDuration] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Persistence logic - Load only once on mount
+    useEffect(() => {
+        const savedMasterVolume = localStorage.getItem('masterVolume');
+        if (savedMasterVolume !== null) {
+            setMasterVolume(parseFloat(savedMasterVolume));
+        }
+
+        const savedTimerDuration = localStorage.getItem('timerDuration');
+        if (savedTimerDuration !== null) {
+            setTimerDuration(parseInt(savedTimerDuration));
+        }
+
+        const savedSoundVolumes = localStorage.getItem('soundVolumes');
+        if (savedSoundVolumes) {
+            try {
+                const volumes = JSON.parse(savedSoundVolumes) as Record<string, number>;
+                const initialState: Record<string, AudioState> = {};
+                Object.entries(volumes).forEach(([id, vol]) => {
+                    initialState[id] = { isPlaying: false, volume: vol };
+                });
+                setActiveSounds(initialState);
+            } catch (e) {
+                console.error('Failed to parse saved sound volumes', e);
+            }
+        }
+        setIsLoaded(true);
+    }, []);
+
+    // Save master volume whenever it changes, but only after initial load
+    useEffect(() => {
+        if (isLoaded) {
+            localStorage.setItem('masterVolume', masterVolume.toString());
+        }
+    }, [masterVolume, isLoaded]);
+
+    // Save timer duration whenever it changes, but only after initial load
+    useEffect(() => {
+        if (isLoaded) {
+            localStorage.setItem('timerDuration', timerDuration.toString());
+        }
+    }, [timerDuration, isLoaded]);
+
+    // Save individual sound volumes whenever they change, but only after initial load
+    useEffect(() => {
+        if (isLoaded) {
+            const volumes: Record<string, number> = {};
+            Object.entries(activeSounds).forEach(([id, state]) => {
+                volumes[id] = state.volume;
+            });
+            localStorage.setItem('soundVolumes', JSON.stringify(volumes));
+        }
+    }, [activeSounds, isLoaded]);
 
     // Timer logic
     useEffect(() => {
@@ -101,11 +156,24 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     const playAll = () => {
-        const newState: Record<string, AudioState> = {};
-        AVAILABLE_SOUNDS.forEach(sound => {
-            newState[sound.id] = { isPlaying: true, volume: 0.5 };
+        setActiveSounds(prev => {
+            const newState: Record<string, AudioState> = { ...prev };
+            AVAILABLE_SOUNDS.forEach(sound => {
+                const current = prev[sound.id] || { isPlaying: false, volume: 0.5 };
+                newState[sound.id] = { ...current, isPlaying: true };
+            });
+            return newState;
         });
-        setActiveSounds(newState);
+    };
+
+    const stopAll = () => {
+        setActiveSounds(prev => {
+            const newState: Record<string, AudioState> = { ...prev };
+            Object.keys(prev).forEach(id => {
+                newState[id] = { ...prev[id], isPlaying: false };
+            });
+            return newState;
+        });
     };
 
     const resetAll = () => {
@@ -123,6 +191,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             setSoundVolume,
             handleSoundError,
             playAll,
+            stopAll,
             resetAll,
             timerDuration,
             setTimerDuration,

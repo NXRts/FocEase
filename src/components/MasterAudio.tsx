@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Volume2, Clock, Play, RotateCcw, ChevronDown } from 'lucide-react';
+import { Volume2, Clock, Play, Pause, RotateCcw, ChevronDown } from 'lucide-react';
 import { useAudio } from '@/context/AudioContext';
 
 const TIMER_OPTIONS = [
@@ -16,12 +16,16 @@ export default function MasterAudio() {
     const {
         masterVolume,
         setMasterVolume,
+        activeSounds,
         playAll,
+        stopAll,
         resetAll,
         timerDuration,
         setTimerDuration,
         timeLeft
     } = useAudio();
+
+    const isAnyPlaying = Object.values(activeSounds).some(s => s.isPlaying);
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
@@ -76,13 +80,22 @@ export default function MasterAudio() {
                 )}
             </div>
 
-            {/* Play All Button */}
+            {/* Play/Pause All Button */}
             <button
-                onClick={playAll}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-8 py-3.5 rounded-2xl flex items-center gap-3 font-medium transition-all active:scale-95 shadow-lg shadow-purple-900/20"
+                onClick={isAnyPlaying ? stopAll : playAll}
+                className={`bg-gradient-to-r ${isAnyPlaying ? 'from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500' : 'from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500'} text-white px-8 py-3.5 rounded-2xl flex items-center gap-3 font-medium transition-all active:scale-95 shadow-lg shadow-purple-900/20`}
             >
-                <Play size={18} fill="currentColor" />
-                Play All
+                {isAnyPlaying ? (
+                    <>
+                        <Pause size={18} fill="currentColor" />
+                        Pause All
+                    </>
+                ) : (
+                    <>
+                        <Play size={18} fill="currentColor" />
+                        Play All
+                    </>
+                )}
             </button>
 
             {/* Reset Button */}

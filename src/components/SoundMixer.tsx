@@ -1,18 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { CloudRain, Flame, Waves, Wind, Play, Pause, Coffee, Trees, Music, Bird, AlertCircle, Bell, Sparkles, Moon, Sun, CloudLightning, Music2 } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { Play, Pause, AlertCircle } from 'lucide-react';
 import { Sound } from '@/types';
-
-const AVAILABLE_SOUNDS: Sound[] = [
-    { id: 'rain', name: 'Rain', src: '/audio/rain.mp3', icon: <CloudRain size={20} />, color: 'blue' },
-    { id: 'fire', name: 'Fireplace', src: '/audio/fireplace.mp3', icon: <Flame size={20} />, color: 'orange' },
-    { id: 'stream', name: 'River', src: '/sounds/stream.ogg', icon: <Waves size={20} />, color: 'cyan' },
-    { id: 'wind', name: 'Wind', src: '/audio/wind.mp3', icon: <Wind size={20} />, color: 'teal' },
-    { id: 'cafe', name: 'Cafe Ambience', src: '/audio/cafe.mp3', icon: <Coffee size={20} />, color: 'amber' },
-    { id: 'birds', name: 'Morning Birds', src: '/audio/birds.mp3', icon: <Bird size={20} />, color: 'green' },
-    { id: 'thunder', name: 'Thunderstorm', src: '/audio/thunder.mp3', icon: <CloudLightning size={20} />, color: 'yellow' },
-    { id: 'night', name: 'Nature Night', src: '/audio/night.mp3', icon: <Moon size={20} />, color: 'indigo' },
-    { id: 'ocean', name: 'Ocean Waves', src: '/audio/ocean.mp3', icon: <Waves size={20} />, color: 'sky' },
-];
+import { useAudio, AVAILABLE_SOUNDS } from '@/context/AudioContext';
 
 const getSoundColors = (color: string = 'purple') => {
     const colors: Record<string, { bg: string, text: string, slider: string, border: string, shadow: string }> = {
@@ -104,42 +93,7 @@ const AudioController = ({
 };
 
 export default function SoundMixer() {
-    const [activeSounds, setActiveSounds] = useState<Record<string, { isPlaying: boolean; volume: number; error?: string }>>({});
-
-    const handleError = (id: string, message: string) => {
-        setActiveSounds(prev => {
-            const current = prev[id] || { isPlaying: false, volume: 0.5 };
-            // Avoid infinite loops if error keeps firing
-            if (current.error === message) return prev;
-            return {
-                ...prev,
-                [id]: { ...current, isPlaying: false, error: message }
-            };
-        });
-    };
-
-    const toggleSound = (id: string) => {
-        setActiveSounds(prev => {
-            const current = prev[id] || { isPlaying: false, volume: 0.5 };
-
-            // Default to playing with 50% volume if starting
-            if (!prev[id]) {
-                return { ...prev, [id]: { isPlaying: true, volume: 0.5 } };
-            }
-            // If there's an error, try to clear it and re-play
-            if (current.error) {
-                return { ...prev, [id]: { ...current, isPlaying: true, error: undefined } };
-            }
-            return { ...prev, [id]: { ...current, isPlaying: !current.isPlaying } };
-        });
-    };
-
-    const changeVolume = (id: string, value: number) => {
-        setActiveSounds(prev => {
-            const current = prev[id] || { isPlaying: false, volume: 0.5 };
-            return { ...prev, [id]: { ...current, volume: value } };
-        });
-    };
+    const { activeSounds, toggleSound, setSoundVolume, handleSoundError, masterVolume } = useAudio();
 
     return (
         <div className="bg-zen-card p-6 rounded-3xl shadow-lg border border-white/5 min-h-[300px] flex flex-col h-full">
@@ -159,8 +113,8 @@ export default function SoundMixer() {
                             <AudioController
                                 sound={sound}
                                 isPlaying={state.isPlaying}
-                                volume={state.volume}
-                                onError={handleError}
+                                volume={state.volume * masterVolume}
+                                onError={handleSoundError}
                             />
 
                             <div className="flex items-center gap-4">
@@ -203,7 +157,7 @@ export default function SoundMixer() {
                                             max="1"
                                             step="0.01"
                                             value={state.volume}
-                                            onChange={(e) => changeVolume(sound.id, parseFloat(e.target.value))}
+                                            onChange={(e) => setSoundVolume(sound.id, parseFloat(e.target.value))}
                                             className="w-full h-1 bg-zen-bg rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white transition-opacity"
                                             disabled={!!state.error}
                                             style={{

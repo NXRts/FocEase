@@ -4,6 +4,7 @@ import TaskList from '@/components/TaskList';
 import SoundMixer from '@/components/SoundMixer';
 import PrayerTimes from '@/components/PrayerTimes';
 import Clock from '@/components/Clock';
+import MasterAudio from '@/components/MasterAudio';
 
 export default function Home() {
   return (
@@ -22,6 +23,8 @@ export default function Home() {
           <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-blue-500/80 blur-md md:blur-lg animate-pulse"></div>
         </div>
       </header>
+
+      <MasterAudio />
 
       <main className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 flex-1 w-full items-stretch">
         <div className="h-[600px] min-h-0"><Timer /></div>

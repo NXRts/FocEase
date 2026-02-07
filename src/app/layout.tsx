@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: 'A minimalist productivity dashboard',
 };
 
+import { AudioProvider } from '@/context/AudioContext';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} antialiased`}>
-        {children}
+        <AudioProvider>
+          {children}
+        </AudioProvider>
       </body>
     </html>
   );
